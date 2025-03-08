@@ -1,0 +1,53 @@
+﻿
+@model JsonDemo.Models.Teacher
+
+@{
+    bool creating = Model.Id == 0;
+    string session = "Allocation : " + JsonDemo.Models.NextSession.Caption;
+}
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <details open>
+        <summary>Informations</summary>
+        <div class="form_layout">
+            <div>
+                <div>
+                    @Html.LabelFor(model => model.FirstName)
+                    @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                </div>
+                <div>
+                    @Html.LabelFor(model => model.LastName)
+                    @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                </div>
+                <div>
+                    @Html.LabelFor(model => model.StartDate)
+                    @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control datepicker" } })
+                    @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+                </div>
+                <div>
+                    @Html.LabelFor(model => model.Phone)
+                    @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control phoneExt" } })
+                    @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div>
+                <label>&nbsp;Avatar</label>
+                <div class="imageControl">
+                    @Helper.ImageUploader("Avatar", Model.Avatar, "Cliquez pour choisir votre avatar")
+                    @Html.ValidationMessageFor(model => model.Avatar, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <br />
+    </details>
+    if (!creating)
+    {
+        <details open>
+            <summary>@session</summary>
+            @Helper.SelectionLists("selectedCoursesId", (SelectList)ViewBag.Allocations, (SelectList)ViewBag.Courses)
+        </details>
+    }
+}

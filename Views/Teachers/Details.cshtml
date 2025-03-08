@@ -1,0 +1,60 @@
+﻿
+@model JsonDemo.Models.Teacher
+
+@{
+    ViewBag.Title = "Details";
+    var yearsList = ((List<int>)Session["StudentsYearsList"]).OrderByDescending(i => i);
+}
+
+<details open>
+    <summary><i class="infoIcon fa-solid fa-chalkboard-user"></i> <b> @Model.FirstName @Model.LastName</b> </summary>
+    <div class="details_layout">
+        <div>
+            <br />
+            <h6><i class="infoIcon fa fa-barcode"></i> @Model.Code</h6>
+            <h6><i class="infoIcon fa fa-phone"></i> @Model.Phone</h6>
+            <h6><i class="infoIcon fa fa-paper-plane"></i> <a href="mailto:@Model.Email">@Model.Email</a> </h6>
+            <br />
+            <h6>Embauché le @Model.StartDate.ToFrenchDateString()</h6>
+            <h6>@Model.YearsOfService.ToString("n1") ans d'ancienneté</h6>
+        </div>
+        <div>
+            <br />
+            @Helper.Image(Model.Avatar, "largeAvatar")
+        </div>
+    </div>
+</details>
+
+
+
+
+<hr />
+
+<div>
+    <h4>Allocations</h4>
+    @foreach (int year in yearsList)
+    {
+        var allocations = Model.Allocations.Where(a => a.Year == year).OrderBy(a => a.Course.Code);
+        if (allocations.Count() > 0)
+        {
+            <details open>
+                <summary>@year</summary>
+                @foreach (var allocation in allocations)
+                {
+                    <div class="CoursesListLayout ellipsis">
+                        <a href="@Url.Action("Details", "Courses", new { id = allocation.Course.Id })">
+                            <span style="color:gray">[@allocation.Course.Session] </span>
+                            <span class="courseCode">@allocation.Course.Code</span>
+                            @allocation.Course.Title
+                        </a>
+                    </div>
+                }
+            </details>
+        }
+    }
+
+
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

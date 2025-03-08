@@ -1,0 +1,58 @@
+﻿
+@{
+    ViewBag.Title = "Connexion";
+    string currentLoginEmail = Session["currentLoginEmail"] != null ? (string)Session["currentLoginEmail"] : "";
+    string loginMessage = (string)Session["LoginMessage"];
+    bool loginSuccess = (bool)Session["LoginSuccess"];
+    string messageColor = loginSuccess ? "green" : "red";
+}
+
+<div class="login-form">
+    @if (!string.IsNullOrEmpty(loginMessage))
+    {
+        <div class="login-error" style="color:@messageColor; width:100">
+            <i class=" fa-solid fa-triangle-exclamation"></i> @loginMessage
+        </div>
+    }
+
+
+    <form method="POST" action="/Accounts/Login">
+        @Html.AntiForgeryToken()
+        <input type='email'
+               name='Email'
+               id='Email'
+               class="form-control"
+               autocomplete="email"
+               required
+               RequireMessage='Veuillez entrer votre courriel'
+               CustomErrorMessage='Courriel invalide'
+               InvalidMessage='Courriel invalide'
+               placeholder="adresse de courriel"
+               value=@currentLoginEmail>
+
+        <input type='password'
+               name='Password'
+               id='Password'
+               placeholder='Mot de passe'
+               class="form-control"
+               autocomplete="current-password"
+               required
+               RequireMessage='Veuillez entrer votre mot de passe'
+               CustomErrorMessage='Mot de passe incorrect'>
+
+        <input type='submit' name='submit' id="submit" value="Connexion" class="btn btn-primary">
+    </form>
+    <hr>
+    <a href='/Accounts/Subscribe' class="btn btn-secondary">
+        Nouveau compte
+    </a>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/customval")
+    <script>
+        $(() => {
+            initFormValidation();
+        })
+    </script>
+}

@@ -1,0 +1,47 @@
+﻿
+@model JsonDemo.Models.Student
+
+@{
+    ViewBag.Title = "Details";
+    var yearsList = ((List<int>)Session["StudentsYearsList"]).OrderByDescending(i => i);
+}
+<details>
+    <summary><i class="infoIcon fa-solid fa-graduation-cap"></i> <b> @Model.FirstName @Model.LastName</b> </summary>
+    <br />
+    <h6><i class="infoIcon fa fa-barcode"></i> @Model.Code</h6>
+    <h6><i class="infoIcon fa fa-phone"></i> @Model.Phone</h6>
+    <h6><i class="infoIcon fa fa-paper-plane"></i> <a href="mailto:@Model.Email">@Model.Email</a> </h6>
+
+    <h6><i class="infoIcon fa fa-cake-candles"></i> @Model.BirthDate.ToFrenchDateString()</h6>
+</details>
+
+<hr />
+
+<div>
+    <h4>Inscriptions</h4>
+    @foreach (int year in yearsList)
+    {
+        var registrations = Model.Registrations.Where(r => r.Year == year).OrderBy(r => r.Course.Code);
+        if (registrations.Count() > 0)
+        {
+            <details open>
+                <summary>@year</summary>
+                @foreach (var registration in registrations)
+                {
+                    <div class="CoursesListLayout ellipsis">
+                        <a href="@Url.Action("Details", "Courses", new { id = registration.Course.Id })">
+                            <span style="color:gray">[@registration.Course.Session] </span>
+                            <span class="courseCode">@registration.Course.Code</span>
+                            @registration.Course.Title
+                        </a>
+                    </div>
+                }
+            </details>
+        }
+    }
+
+
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

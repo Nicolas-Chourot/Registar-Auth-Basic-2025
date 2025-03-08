@@ -1,0 +1,56 @@
+﻿
+@model JsonDemo.Models.Student
+
+@{
+    bool creating = Model.Id == 0;
+    string submitCaption = creating ? "Ajouter" : "Modifier";
+    string session = "Inscriptions : " + JsonDemo.Models.NextSession.Caption;
+}
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <details open>
+        <summary>Informations</summary>
+
+        <div>
+            @Html.LabelFor(model => model.FirstName)
+
+            @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+        </div>
+        <div>
+            @Html.LabelFor(model => model.LastName)
+
+            @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.BirthDate)
+            @Html.EditorFor(model => model.BirthDate, new { htmlAttributes = new { @class = "form-control datepicker" } })
+            @Html.ValidationMessageFor(model => model.BirthDate, "", new { @class = "text-danger" })
+        </div>
+        <div>
+            @Html.LabelFor(model => model.Email)
+            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+        </div>
+        <div>
+            @Html.LabelFor(model => model.Phone)
+
+            @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control phone" } })
+            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+        </div>
+        <br />
+    </details>
+    if (!creating)
+    {
+        <details open>
+            <summary>@session</summary>
+            @Helper.SelectionLists("selectedCoursesId", (SelectList)ViewBag.Registrations, (SelectList)ViewBag.Courses)
+        </details>
+    }
+    <!--
+        <hr />
+        <input type="submit" value="@submitCaption" class="btn btn-primary" />
+    -->
+}

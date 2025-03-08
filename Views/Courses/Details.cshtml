@@ -1,0 +1,48 @@
+﻿
+@model JsonDemo.Models.Course
+
+@{
+    ViewBag.Title = "Details";
+    var yearsList = ((List<int>)Session["StudentsYearsList"]).OrderByDescending(i => i);
+}
+
+
+<h5>@Model.Code</h5>
+<h5>Session @Model.Session</h5>
+<b>@Model.Title</b>
+<br />
+
+<hr />
+
+<div>
+    <h4>Étudiants inscrits</h4>
+    @foreach (int year in yearsList)
+    {
+        var registrations = Model.Registrations.Where(r => r.Year == year).OrderBy(r => r.Student.LastName).ThenBy(r => r.Student.FirstName);
+        var allocation = Model.Allocations.ToList().Where(a => a.Year == year).FirstOrDefault();
+        string teacherName = allocation != null ? allocation.Teacher.FullName : "non attribué";
+        string detailsTeacherUrl = allocation != null ? "/Teachers/Details/" + allocation.Teacher.Id : "#";
+        if (registrations.Count() > 0)
+        {
+            <details open>
+                <summary>Cohorte @year - <a href="@detailsTeacherUrl" class="TeacherLink" title="Voir détails">@teacherName</a></summary>
+                @foreach (var registration in registrations)
+                {
+                    <div class="CoursesListLayout ellipsis">
+                        <a href="@Url.Action("Details", "Students", new {id = registration.Student.Id})">
+                            <div>
+                                <span class="studentCode">@registration.Student.Code</span>
+                                @registration.Student.LastName @registration.Student.FirstName
+                            </div>
+                        </a>
+                    </div>
+                }
+            </details>
+        }
+    }
+
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
