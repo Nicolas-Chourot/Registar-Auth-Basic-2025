@@ -2,8 +2,11 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
+using CompareAttribute = System.ComponentModel.DataAnnotations.CompareAttribute;
 
 namespace JsonDemo.Models
 {
@@ -26,9 +29,32 @@ namespace JsonDemo.Models
         public static string DefaultImage { get { return Avatars_Folder + Default_Avatar; } }
 
         #region Data Members
+
+        [Display(Name = "Nom"), Required(ErrorMessage = "Obligatoire")]
         public string Name { get; set; }
+
+        [DataType(DataType.EmailAddress)]
+        [Remote("EmailAvailable", "Accounts", AdditionalFields = "", HttpMethod = "POST", ErrorMessage = "Ce courriel est déjà utilisé.")]
+        [Display(Name = "Courriel"), Required(ErrorMessage = "Obligatoire")]
         public string Email { get; set; }
+
+        [JsonIgnore]
+        [Display(Name = "Confirmation")]
+        [Compare("Email", ErrorMessage = "Ne correspond pas.")]
+        public string ConfirmEmail { get; set; }
+
+        [Display(Name = "Mot de passe")]
+        [Required(ErrorMessage = "Le mot de passe est requis.")]
+        [StringLength(50, ErrorMessage = "Le mot de passe doit comporter au moins {2} caractères.", MinimumLength = 6)]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
+
+        [JsonIgnore]
+        [DataType(DataType.Password)]
+        [Display(Name = "Confirmation")]
+        [Compare("Password", ErrorMessage = "Ne correspond pas.")]
+        public string ConfirmPassword { get; set; }
+
         public bool Admin { get; set; }
         public bool Blocked { get; set; }
 

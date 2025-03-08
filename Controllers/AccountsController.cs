@@ -1,4 +1,5 @@
-﻿using JsonDemo.Models;
+﻿using JSON_DAL;
+using JsonDemo.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,19 +11,15 @@ namespace JsonDemo.Controllers
 {
     public class AccountsController : Controller
     {
-        public JsonResult EmailExist(string Email)
+        [HttpPost]
+        public JsonResult EmailAvailable(string Email)
         {
-            bool exist = DB.Users.EmailExist(Email);
-            return Json(exist, JsonRequestBehavior.AllowGet);
-        }
-        [UserAccess]
-        public JsonResult EmailConflict(string Email)
-        {
-            User connectedUser = (User)Session["ConnectedUser"];
-            User foundUser = DB.Users.ToList().Where(u => u.Email == Email).FirstOrDefault();
             bool conflict = false;
-            if (foundUser != null) conflict = foundUser.Id != connectedUser.Id;
-            return Json(conflict, JsonRequestBehavior.AllowGet);
+            User connectedUser = (User)Session["ConnectedUser"];
+            int currentId = connectedUser != null ? connectedUser.Id : 0;
+            User foundUser = DB.Users.ToList().Where(u => u.Email == Email && u.Id != currentId).FirstOrDefault();
+            conflict = foundUser != null;
+            return Json(!conflict);
         }
         public ActionResult ExpiredSession()
         {
@@ -82,7 +79,10 @@ namespace JsonDemo.Controllers
             User connectedUser = (User)Session["ConnectedUser"];
             if (connectedUser != null)
             {
-                return View(connectedUser);
+                var userClone = connectedUser.Clone();
+                userClone.ConfirmEmail = userClone.Email;
+                Session["CurrentEditingUserPassword"] = DateTime.Now.Ticks.ToString();
+                return View(userClone);
             }
             return RedirectToAction("Login", "Accounts");
         }
@@ -93,8 +93,10 @@ namespace JsonDemo.Controllers
         {
             User connectedUser = (User)Session["ConnectedUser"];
             user.Id = connectedUser.Id;
-            user.Blocked = false;
+            user.Blocked = connectedUser.Blocked;
             user.Admin = connectedUser.Admin;
+            if (user.Password == (string)Session["CurrentEditingUserPassword"])
+                user.Password = ""; // no password change
             if (DB.Users.Update(user))
             {
                 Session["ConnectedUser"] = DB.Users.Get(user.Id);

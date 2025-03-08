@@ -111,12 +111,6 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Views\Accounts\EditProfil.cshtml.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Views\Accounts\EditProfil.cshtml.designer.cs">
-      <DependentUpon>EditProfil.cshtml.cs</DependentUpon>
-    </Compile>
     <Content Include="App_Assets\Students\no_avatar.png" />
     <Content Include="App_Assets\Teachers\bc2be815-cd3d-459d-a312-49e60229c80c.jpeg" />
     <Content Include="App_Assets\Teachers\c00b3008-a41a-4586-a338-1a589256b1bd.jpeg" />
@@ -125,6 +119,7 @@
     <Content Include="App_Assets\Teachers\f9a42fd9-87e4-41d6-87c6-50fa3526db49.jpeg" />
     <Content Include="App_Assets\Teachers\fbb51b24-2763-4d30-b175-6a78856ade4b.jpeg" />
     <Content Include="App_Assets\Teachers\no_avatar.png" />
+    <Content Include="App_Assets\Users\7ca47181-ac39-4102-935f-358622c92acf.jpeg" />
     <Content Include="App_Assets\Users\no_avatar.png" />
     <Content Include="Content\Accounts.css" />
     <Content Include="Content\Courses.css" />
@@ -179,9 +174,9 @@
     <Content Include="App_Code\Helper.cshtml" />
     <Content Include="App_Data\Allocations.json" />
     <Content Include="App_Data\Teachers.json" />
+    <Content Include="App_Data\Users.json" />
     <None Include="Properties\PublishProfiles\Registar2025 - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
-    <Content Include="Scripts\customval.js" />
     <Content Include="Scripts\imageControl-2.0.js" />
     <None Include="Scripts\jquery-3.7.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.1.js" />
@@ -233,6 +228,7 @@
     <Content Include="Views\Accounts\Login.cshtml" />
     <Content Include="Views\Accounts\Subscribe.cshtml" />
     <Content Include="Views\Accounts\EditProfil.cshtml" />
+    <Content Include="Views\Accounts\ProfilForm.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

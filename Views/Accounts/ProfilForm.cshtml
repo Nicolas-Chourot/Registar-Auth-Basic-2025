@@ -1,0 +1,35 @@
+﻿
+@model JsonDemo.Models.User
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="profil-form">
+        <fieldset>
+            <legend>@Html.DisplayNameFor(model => model.Name)</legend>
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", placeholder = Html.DisplayNameFor(model => model.Name) } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+        </fieldset>
+        <fieldset>
+            <legend>@Html.DisplayNameFor(model => model.Email)</legend>
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = Html.DisplayNameFor(model => model.Email) } })
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+
+                @Html.EditorFor(model => model.ConfirmEmail, new { htmlAttributes = new { @class = "form-control", placeholder = Html.DisplayNameFor(model => model.ConfirmEmail) } })
+                @Html.ValidationMessageFor(model => model.ConfirmEmail, "", new { @class = "text-danger" })
+        </fieldset>
+        <fieldset>
+            <legend>@Html.DisplayNameFor(model => model.Password)</legend>
+                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", placeholder = Html.DisplayNameFor(model => model.Password) } })
+                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+
+                @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "form-control", placeholder = Html.DisplayNameFor(model => model.ConfirmEmail) } })
+                @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
+        </fieldset>
+        <fieldset>
+            <legend>Avatar</legend>
+            @Helper.ImageUploader("Avatar", Model.Avatar, "Cliquez glisser une photo")
+        </fieldset>
+
+    </div>
+}

@@ -20,14 +20,6 @@ namespace JsonDemo
                        "~/Scripts/selections.js",
                        "~/Scripts/jquery.maskedinput.js",
                        "~/Scripts/SiteScripts.js"));
-            
-            bundles.Add(new ScriptBundle("~/bundles/customval").Include(
-                       "~/Scripts/customval.js",
-                       "~/Scripts/jquery-ui.js",
-                       "~/Scripts/imageControl-2.0.js",
-                       "~/Scripts/selections.js",
-                       "~/Scripts/jquery.maskedinput.js",
-                       "~/Scripts/SiteScripts.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                      "~/Content/jquery-ui.css",

@@ -282,13 +282,13 @@ fieldset {
 }
 
 .xsmallAvatar {
-    float: left;
-    width: 20px;
-    height: 20px;
+    width: 25px;
+    height: 25px;
     border-radius: 25px;
     background-size: cover !important;
     background-position: center !important;
     background-repeat: no-repeat !important;
+    transform:translateX(-5px);
 }
 .smallAvatar {
     width: 35px;
@@ -299,6 +299,13 @@ fieldset {
     background-repeat: no-repeat !important;
 }
 
+.dropdown-item a {
+    display:grid;
+    grid-template-columns: 20px auto;
+    align-items:center;
+    text-decoration:none;
+    gap:6px;
+}
 
 .mediumAvatar {
     width: 50px;
