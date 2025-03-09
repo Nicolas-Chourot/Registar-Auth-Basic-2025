@@ -119,7 +119,10 @@
     <Content Include="App_Assets\Teachers\f9a42fd9-87e4-41d6-87c6-50fa3526db49.jpeg" />
     <Content Include="App_Assets\Teachers\fbb51b24-2763-4d30-b175-6a78856ade4b.jpeg" />
     <Content Include="App_Assets\Teachers\no_avatar.png" />
-    <Content Include="App_Assets\Users\7ca47181-ac39-4102-935f-358622c92acf.jpeg" />
+    <Content Include="App_Assets\Users\03ccc3a4-e11c-41d2-a678-cb47f9a1acd5.jpeg" />
+    <Content Include="App_Assets\Users\7639cf10-f2d1-4cdf-b0ba-2a5a3b764106.jpeg" />
+    <Content Include="App_Assets\Users\79d885f4-f9c3-4cee-b27f-bd5f9f923c21.jpeg" />
+    <Content Include="App_Assets\Users\b92612bf-1e79-40df-81c8-9dcd31a129f7.jpeg" />
     <Content Include="App_Assets\Users\no_avatar.png" />
     <Content Include="Content\Accounts.css" />
     <Content Include="Content\Courses.css" />
