@@ -28,7 +28,8 @@ function initSessionTimeout(stallingTime = infinite, callback = timeoutCallBack)
     startCountdown();
 }
 function noTimeout() {
-    clearTimeout(currentTimeouID);
+    //clearTimeout(currentTimeouID);
+    initSessionTimeout((20 * 60) - 60 ); // Default ASP.Net session is 20 minutes allow 60 secondes for user to decide
 }
 
 function startCountdown() {
