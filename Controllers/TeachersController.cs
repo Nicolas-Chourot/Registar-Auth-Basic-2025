@@ -50,21 +50,27 @@ namespace JsonDemo.Controllers
             return Json(available);
         }
 
+        public ActionResult GetTeachers(bool forceRefresh = false)
+        {
+            if (forceRefresh || DB.Teachers.HasChanged)
+            {
+                string searchName = ((string)Session["SearchTeacherName"]).ToLower();
+                var teachers = DB.Teachers.ToList().OrderBy(m => m.LastName).ThenBy(m => m.FirstName).ToList();
+
+                if ((bool)Session["ShowTeachersSearch"])
+                {
+                    if (searchName != "")
+                        teachers = teachers.Where(s => s.LastName.ToLower().StartsWith(searchName)).ToList();
+
+                }
+                return PartialView(teachers);
+            }
+            return null;
+        }
         public ActionResult Index()
         {
             InitSessionVariables();
-
-            string searchName = ((string)Session["SearchTeacherName"]).ToLower();
-            var teachers = DB.Teachers.ToList().OrderBy(m => m.LastName).ThenBy(m => m.FirstName).ToList();
-
-            if ((bool)Session["ShowTeachersSearch"])
-            {
-                if (searchName != "")
-                    teachers = teachers.Where(s => s.LastName.ToLower().StartsWith(searchName)).ToList();
-               
-            }
-
-            return View(teachers);
+            return View();
         }
         public ActionResult Details(int id)
         {

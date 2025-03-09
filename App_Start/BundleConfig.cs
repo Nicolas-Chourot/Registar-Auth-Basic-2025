@@ -10,7 +10,7 @@ namespace JsonDemo
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js",
-                        "~/Scripts/partialRefresh.js",
+                        "~/Scripts/autoRefreshPanel.js",
                         "~/Scripts/session.js",
                         "~/Scripts/bootbox-custom.js"));
 

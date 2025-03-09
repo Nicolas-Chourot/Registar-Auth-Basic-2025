@@ -1,0 +1,13 @@
+﻿@model IEnumerable<JsonDemo.Models.Teacher>
+@foreach (var item in Model)
+{
+
+    <a href="@Url.Action("Details", new { id = item.Id })" class="TeacherListLayout">
+        @Helper.Image(item.Avatar, "smallAvatar")
+
+        <span class="teacherCode">@item.Code</span>
+        <div>@item.LastName @item.FirstName</div>
+    </a>
+
+}
+
