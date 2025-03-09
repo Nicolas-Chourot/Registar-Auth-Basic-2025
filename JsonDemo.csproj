@@ -157,6 +157,7 @@
     <Content Include="Content\jquery-ui.css" />
     <Content Include="Content\jquery-ui.structure.css" />
     <Content Include="Content\jquery-ui.theme.css" />
+    <Content Include="Content\popup.css" />
     <Content Include="Content\Selections.css" />
     <Content Include="Content\Students.css" />
     <Content Include="Content\Teachers.css" />
@@ -192,6 +193,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\partialRefresh.js" />
     <Content Include="Scripts\selections.js" />
+    <Content Include="Scripts\session.js" />
     <Content Include="Scripts\SiteScripts.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">

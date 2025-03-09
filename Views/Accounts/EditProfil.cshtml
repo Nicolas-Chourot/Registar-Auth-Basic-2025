@@ -9,6 +9,7 @@
     @Scripts.Render("~/bundles/jqueryval")
     <script>
         $(() => {
+            noTimeout();
             $("#Password").val("@passwordTemp");
             $("#ConfirmPassword").val("@passwordTemp");
         })

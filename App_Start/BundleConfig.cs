@@ -11,6 +11,7 @@ namespace JsonDemo
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js",
                         "~/Scripts/partialRefresh.js",
+                        "~/Scripts/session.js",
                         "~/Scripts/bootbox-custom.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
@@ -26,6 +27,7 @@ namespace JsonDemo
                      "~/Content/jquery-ui.strucure.css",
                      "~/Content/jquery-ui.theme.css",
                      "~/Content/site.css",
+                     "~/Content/popup.css",
                      "~/Content/Accounts.css",
                      "~/Content/Icons.css",
                      "~/Content/Students.css",
