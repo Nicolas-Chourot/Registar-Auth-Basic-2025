@@ -1,0 +1,63 @@
+﻿@model JsonDemo.Models.LoginCredential
+
+@{
+    ViewBag.Title = "Connexion";
+
+    string currentLoginEmail = Session["currentLoginEmail"] != null ? (string)Session["currentLoginEmail"] : "";
+    string loginMessage = (string)Session["LoginMessage"];
+    bool loginSuccess = (bool)Session["LoginSuccess"];
+    string messageColor = loginSuccess ? "green" : "red";
+
+}
+
+<br />
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="login-form">
+
+        @if (loginMessage != "")
+        {
+            <span style="color:@messageColor">@loginMessage</span>
+        }
+
+        <fieldset>
+            <legend>Connexion</legend>
+            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = @Html.DisplayNameFor(model => model.Email) } })
+            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+            <div class="passwordLayout">
+                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", placeholder = @Html.DisplayNameFor(model => model.Password) } })
+                @Helper.Icon("toggleShowPassword", "passwordShowIcon fa-eye", "Afficher/Masquer le mot de passe")
+            </div>
+            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+
+            <input type="submit" value="Se connecter..." class="btn btn-primary" />
+        </fieldset>
+        @Html.ActionLink("S'enregistrer...", "Subscribe")
+        @Html.ActionLink("Mot de passe oublié...", "ResetPasswordCommand")
+    </div>
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(() => {
+            noTimeout();
+
+            if ($("#Password").val() == "")
+                $("#toggleShowPassword").hide();
+            else
+                $("#toggleShowPassword").show();
+            $("#toggleShowPassword").click(() => {
+                $("#Password").attr("type", $("#Password").attr("type") == 'password' ? 'text' : 'password');
+                $("#toggleShowPassword").toggleClass("fa-eye");
+                $("#toggleShowPassword").toggleClass("fa-eye-slash");
+            });
+            $("#Password").keyup(() => {
+                if ($("#Password").val() == "")
+                    $("#toggleShowPassword").hide();
+                else
+                    $("#toggleShowPassword").show();
+            })
+        })
+    </script>
+}

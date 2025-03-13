@@ -1,0 +1,49 @@
+﻿@{
+    string controller = HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString().ToLower();
+    string action = HttpContext.Current.Request.RequestContext.RouteData.Values["action"].ToString().ToLower();
+    bool showStudentsSearch = Session["ShowStudentsSearch"] != null ? (bool)Session["ShowStudentsSearch"] && controller=="students" : false;
+    bool showCoursesSearch = Session["ShowCoursesSearch"] != null ? (bool)Session["ShowCoursesSearch"] && controller == "courses" : false;
+    bool showTeachersSearch = Session["ShowTeachersSearch"] != null ? (bool)Session["ShowTeachersSearch"] && controller == "teachers" : false;
+    bool showSearch = (action == "index") && (showStudentsSearch || showCoursesSearch || showTeachersSearch);
+    var yearsList = Session["StudentsYearsList"] != null ? ((List<int>)Session["StudentsYearsList"]).OrderByDescending(i => i) : null;
+    var selectedStudentYear = Session["SelectedStudentYear"] != null ? (int)Session["SelectedStudentYear"] : JsonDemo.Models.NextSession.CurrentDate.Year;
+}
+@if (showSearch)
+{
+    <div id="search">
+        @if (showStudentsSearch)
+        {
+            <div style="display:grid; grid-template-columns:40px auto 50px auto; gap:6px;">
+                <label for="searchToken">Nom</label>
+                <input type="search" name="searchToken" id="searchToken" class="form-control" value="@Session["SearchStudentName"]" />
+                <label for="searchYear">Année </label>
+                <select name="SelectedStudentYear" id="SelectedStudentYear" class="form-control" multiselect>
+                    <option value="0">Toutes</option>
+                    @foreach (int year in yearsList)
+                    {
+                        string selected = year == selectedStudentYear ? "selected" : "";
+                        <option value="@year" @selected>@year</option>
+                    }
+                </select>
+            </div>
+        }
+        @if (showCoursesSearch)
+        {
+            <div style="display:grid; grid-template-columns:40px auto 50px auto; gap:6px;">
+                <label for="searchToken">Titre</label>
+                <input type="search" name="searchToken" id="searchToken" class="form-control" value="@Session["SearchCourseTitle"]" />
+            </div>
+        }
+        @if (showTeachersSearch)
+        {
+            <div style="display:grid; grid-template-columns:40px auto 50px auto; gap:6px;">
+                <label for="searchToken">Nom</label>
+                <input type="search" name="searchToken" id="searchToken" class="form-control" value="@Session["SearchTeacherName"]" />
+            </div>
+        }
+
+        <div class="menu-icon-layout">
+            <a href="/@controller/ToggleSearch" class="cmdIcon fa fa-times" title="Fermer la barre de recherche"></a>
+        </div>
+    </div>
+}

@@ -1,0 +1,10 @@
+﻿@model JsonDemo.Models.User
+@{
+    ViewBag.Title = "Nouveau compte";
+    Html.RenderPartial("ProfilForm");
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script> $(() => { noTimeout(); }) </script>
+}

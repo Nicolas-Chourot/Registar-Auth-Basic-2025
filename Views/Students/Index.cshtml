@@ -1,0 +1,59 @@
+﻿
+
+@model IEnumerable<JsonDemo.Models.Student>
+
+@{
+    ViewBag.Title = "Liste des étudiants";
+    var yearsList = ((List<int>)Session["StudentsYearsList"]).OrderByDescending(i => i);
+}
+
+@foreach (int year in yearsList)
+{
+    var students = Model.Where(s => s.Year == year);
+    if (students.Count() > 0)
+    {
+        <details open>
+            <summary>Cohorte @year</summary>
+            @foreach (var item in students)
+            {
+                <div class="StudentListLayout">
+                    <a href="@Url.Action("Details", new { id = item.Id })">
+                        <div style="display:flex">
+                            <span class="studentCode">@item.Code</span>
+                            <div>@item.LastName @item.FirstName</div>
+                        </div>
+                    </a>
+                </div>
+            }
+        </details>
+    }
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(document).ready(function () {
+            var timeout = null;
+            $('#searchToken').keyup(function () {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => {
+                    window.location = "/Students/SearchName?name=" + $(this).val();
+                }, 1000);
+            });
+            $('#searchToken').change(function () {
+                window.location = "/Students/SearchName?name=" + $(this).val();
+            });
+            $('#searchToken').on("search", function () {
+                window.location = "/Students/SearchName?name=" + $(this).val();
+            });
+            // Descending sort of select option values
+            $("#SelectedStudentYear").html($("#SelectedStudentYear option").sort(function (a, b) {
+                console.log(a, b)
+                return a.text == b.text ? 0 : a.text > b.text ? -1 : 1
+            }))
+            $('#SelectedStudentYear').change(function () {
+                window.location = "/Students/SearchYear?year=" + $(this).val();
+            })
+        })
+    </script>
+}

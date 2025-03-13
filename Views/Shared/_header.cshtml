@@ -1,0 +1,148 @@
+﻿@{
+    string controller = HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString().ToLower();
+    string action = HttpContext.Current.Request.RequestContext.RouteData.Values["action"].ToString().ToLower();
+    bool connected = Session["ConnectedUser"] != null;
+    var connectedUser = connected ? (JsonDemo.Models.User)Session["ConnectedUser"] : null;
+    string dataModel = "";
+    switch (controller)
+    {
+        case "students": dataModel = "Étudiant"; break;
+        case "courses": dataModel = "Cours"; break;
+        case "teachers": dataModel = "Prof"; break;
+    }
+}
+<div id="header">
+    <img src="/Logo-Lionel-Groulx.png" class="appLogo" alt="" title="Régistraire">
+
+    @switch (action)
+    {
+        case "index":
+            if (connected)
+            {
+                switch (controller)
+                {
+                    case "students":
+                        <div class="actionTitle">
+                            <b>Étudiants</b>
+                            <a href="/Courses/index" class="unselected" title="Voir la liste des cours">Cours</a>
+                            <a href="/Teachers/index" class="unselected" title="Voir la liste des enseignants">Profs</a>
+                        </div>
+                        break;
+                    case "courses":
+                        <div class="actionTitle">
+                            <a href="/Students/index" class="unselected" title="Voir la liste des étudiants">Étudiants</a>
+                            <b>Cours</b>
+                            <a href="/Teachers/index" class="unselected" title="Voir la liste des enseignants">Profs</a>
+                        </div>
+                        break;
+                    case "teachers":
+                        <div class="actionTitle">
+                            <a href="/Students/index" class="unselected" title="Voir la liste des étudiants">Étudiants</a>
+                            <a href="/Courses/index" class="unselected" title="Voir la liste des cours">Cours</a>
+                            <b>Profs</b>
+                        </div>
+                        break;
+                }
+            }
+            <div class="menu-icon-layout">
+                @if (connected && connectedUser.IsAdmin)
+                {
+                    <a href="/@controller/Create" class="cmdIcon fa fa-plus" title="Ajouter un @dataModel"></a>
+                }
+                <a href="/@controller/ToggleSearch" class="cmdIcon fa fa-search" title="Afficher/Masquer la barre de recherche"></a>
+                <div class="dropdown">
+                    <div data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="cmdIcon fa fa-ellipsis-vertical"></i>
+                    </div>
+                    <div class="dropdown-menu noselect">
+                        @if (connected)
+                        {
+                            <div class="dropdown-item">
+                                <a href="/Accounts/EditProfil" class="noDecoration">
+                                    @Helper.Image(connectedUser.Avatar, "xsmallAvatar ") Profil...
+                                </a>
+                            </div>
+                            <div class="dropdown-item">
+                                <a href="/Accounts/Logout" class="noDecoration">
+                                    <i class="menuIcon fa fa-sign-out"></i> Déconnexion...
+                                </a>
+                            </div>
+                        }
+                        <div class="dropdown-divider"></div>
+                        <div class="dropdown-item">
+                            <a href="/Students/SetYear" class="noDecoration">
+                                <i class="menuIcon fa fa-calendar"></i> Session courante : @JsonDemo.Models.NextSession.ShortCaption...
+                            </a>
+                        </div>
+                        <div class="dropdown-item">
+                            <a href="/Home/About" class="noDecoration">
+                                <i class="menuIcon fa fa-info-circle"></i> À propos...
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            break;
+        case "details":
+            <div class="actionTitle"> @dataModel - Détails </div>
+            <div class="menu-icon-layout">
+                @if (connected && connectedUser.IsAdmin)
+                {
+                    <a href="/@controller/Edit" class="cmdIcon fa fa-edit" title="Modifier"></a>
+                    <i class="cmdIcon fa fa-trash"
+                       title="Effacer"
+                       onclick="bootbox.confirm('Effacer?', function(result){ if (result) window.location = '/@controller/Delete'; })">
+                    </i>
+
+                }
+                <a href="/@controller/index" class="cmdIcon fa fa-times" title="Annuler"></a>
+            </div>
+            break;
+        case "create":
+            <div class="actionTitle"> @dataModel - Ajout </div>
+            <div class="menu-icon-layout">
+                <i class="cmdIcon submitCmd fa fa-check" title="Soumettre"></i>
+                <a href="/@controller/index" class="cmdIcon fa fa-times" title="Annuler"></a>
+            </div>
+            break;
+        case "edit":
+            <div class="actionTitle"> @dataModel - Modification </div>
+            <div class="menu-icon-layout">
+                <i class="cmdIcon submitCmd fa fa-check" title="Soumettre"></i>
+                <a href="/@controller/details/@Session["id"]" class="cmdIcon fa fa-times" title="Annuler"></a>
+            </div>
+            break;
+        case "setyear":
+            <div class="actionTitle">Session courrante </div>
+            <div class="menu-icon-layout">
+                <i class="cmdIcon submitCmd fa fa-check" title="Soumettre"></i>
+                <a href="/@controller/index" class="cmdIcon fa fa-times" title="Fermer"></a>
+            </div>
+            break;
+
+        case "about":
+            <div class="actionTitle">À propos </div>
+            <div class="menu-icon-layout">
+                <i onclick="history.back()" class="cmdIcon fa fa-times" title="Fermer"></i>
+            </div>
+            break;
+        case "login":
+            <div class="actionTitle">@ViewBag.Title</div>
+            break;
+        case "subscribe":
+            <div class="actionTitle">@ViewBag.Title </div>
+            <div class="menu-icon-layout">
+                <i class="cmdIcon submitCmd fa fa-check" title="Soumettre"></i>
+                <a href="/Accounts/login" class="cmdIcon fa fa-times" title="Annuler"></a>
+            </div>
+            break;
+        case "editprofil":
+            <div class="actionTitle">@ViewBag.Title </div>
+            <div class="menu-icon-layout">
+                <i class="cmdIcon submitCmd fa fa-check" title="Soumettre"></i>
+                <i onclick="history.back()" class="cmdIcon fa fa-times" title="Fermer"></i>
+            </div>
+            break;
+    }
+</div>
+

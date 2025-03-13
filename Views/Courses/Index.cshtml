@@ -1,0 +1,49 @@
+﻿
+@model IEnumerable<JsonDemo.Models.Course>
+
+@{
+    ViewBag.Title = "Liste des cours";
+}
+
+@for (int session = 1; session <= 6; session++)
+{
+    var courses = Model.Where(c => c.Session == session);
+    if (courses.Count() > 0)
+    {
+        <details open>
+            <summary>Session @session</summary>
+            @foreach (var course in courses)
+            {
+                <div class="CoursesListLayout ellipsis">
+                    <a href="@Url.Action("Details", new { id = course.Id })" class="ellipsis">
+                        <div class="ellipsis">
+                            <span class="courseCode">@course.Code</span>
+                            @course.Title
+                        </div>
+                    </a>
+                </div>
+            }
+        </details>
+    }
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(document).ready(function () {
+            var timeout = null;
+            $('#searchToken').keyup(function () {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => {
+                    window.location = "/Courses/SearchTitle?title=" + $(this).val();
+                }, 1000);
+            });
+            $('#searchToken').change(function () {
+                window.location = "/Courses/SearchTitle?title=" + $(this).val();
+            });
+            $('#searchToken').on("search", function () {
+                window.location = "/Courses/SearchTitle?title=" + $(this).val();
+            });
+        })</script>
+}

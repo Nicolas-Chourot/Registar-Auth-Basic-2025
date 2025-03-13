@@ -1,0 +1,43 @@
+﻿
+@model JsonDemo.Models.Course
+
+@{
+    bool creating = Model.Id == 0;
+    string submitCaption = creating ? "Ajouter" : "Modifier";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div>
+        @Html.LabelFor(model => model.Session)
+        @*
+            @Html.EditorFor(model => model.Session, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Session, "", new { @class = "text-danger" })
+        *@
+        <select name="Session" id="Session" class="form-control">
+            @for (int session = 1; session <= 6; session++)
+            {
+                string selected = Model.Session == session ? "selected" : "";
+                <option value="@session" @selected>@session</option>
+            }
+        </select>
+    </div>
+    <div>
+        @Html.LabelFor(model => model.Code)
+        @Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
+    </div>
+
+    <div>
+        @Html.LabelFor(model => model.Title)
+        @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+    </div>
+    <!--
+    <hr />
+    <input type="submit" value="@submitCaption" class="btn btn-primary" />
+    -->
+
+}
