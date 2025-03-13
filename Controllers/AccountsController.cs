@@ -43,7 +43,7 @@ namespace JsonDemo.Controllers
             credential.Email = (string)Session["currentLoginEmail"];
             DB.Users.SetOnline(Session["ConnectedUser"], false);
             Session["ConnectedUser"] = null;
-            return View(new LoginCredential());
+            return View(credential);
         }
         [HttpPost]
         [ValidateAntiForgeryToken()]
