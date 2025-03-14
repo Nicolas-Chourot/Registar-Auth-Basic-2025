@@ -65,6 +65,8 @@ namespace JsonDemo.Models
         public bool IsAdmin { get { return Admin; } }
         [JsonIgnore]
         public bool IsBlocked { get { return Blocked; } }
+        [JsonIgnore]
+        public bool IsOnline { get { return Online; } }
         #endregion    
     }
 }
