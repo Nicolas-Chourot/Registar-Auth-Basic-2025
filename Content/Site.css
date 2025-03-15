@@ -1,4 +1,7 @@
-﻿
+/* Hide reveal password */
+::-ms-reveal {
+    display: none;
+}
 
 
 /* Override the default bootstrap behavior where horizontal description lists 
