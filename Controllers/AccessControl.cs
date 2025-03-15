@@ -16,8 +16,16 @@ namespace JsonDemo.Controllers
                 User connectedUser = (User)HttpContext.Current.Session["ConnectedUser"];
                 if (connectedUser == null)
                 {
-                    httpContext.Response.Redirect("/Accounts/Login?message=Accès non autorisé!");
+                    httpContext.Response.Redirect("/Accounts/Login?message=Accès non autorisé!&success=false");
                     return false;
+                }
+                else
+                {
+                    connectedUser = DB.Users.Get(connectedUser.Id);
+                    if (connectedUser.Blocked)
+                    {
+                        return false;
+                    }
                 }
                 return true;
             }
@@ -30,15 +38,23 @@ namespace JsonDemo.Controllers
                 User connectedUser = (User)HttpContext.Current.Session["ConnectedUser"];
                 if (connectedUser == null)
                 {
-                    httpContext.Response.Redirect("/Accounts/Login?message=Accès non autorisé!");
+                    httpContext.Response.Redirect("/Accounts/Login?message=Accès non autorisé!&success=false");
                     return false;
                 }
                 else
                 {
+                    connectedUser = DB.Users.Get(connectedUser.Id);
                     if (!connectedUser.IsAdmin)
                     {
-                        httpContext.Response.Redirect("/Accounts/Login?message=Accès administrateur non autorisé!");
-                        return false;
+                        if (connectedUser.Blocked)
+                        {
+                            return false;
+                        }
+                        else
+                        {
+                            httpContext.Response.Redirect("/Accounts/Login?message=Accès administrateur non autorisé!&success=false");
+                            return false;
+                        }
                     }
                     return true;
                 }

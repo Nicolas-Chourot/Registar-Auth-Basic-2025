@@ -1,4 +1,5 @@
-﻿class AutoRefreshedPanel {
+﻿let EndSessionAction = '/Accounts/Login';
+class AutoRefreshedPanel {
     constructor(panelId, contentServiceURL, refreshRate, postRefreshCallback = null) {
         this.contentServiceURL = contentServiceURL;
         this.panelId = panelId;
@@ -21,7 +22,19 @@
             $.ajax({
                 url: this.contentServiceURL + (forced ? (this.contentServiceURL.indexOf("?") > -1 ? "&" : "?") + "forceRefresh=true" : ""),
                 dataType: "html",
-                success: (htmlContent) => { this.replaceContent(htmlContent) },
+                success: (htmlContent) => {
+                    if (htmlContent != "blocked")
+                        this.replaceContent(htmlContent)
+                },
+                statusCode: {
+                    401: function () {
+                        debugger
+                        if (EndSessionAction != "")
+                            window.location = EndSessionAction + "?message=Votre compte a été bloqué!&success=false";
+                        else
+                            alert("Illegal access!");
+                    }
+                }
             })
         }
     }
@@ -33,6 +46,7 @@
                 this.refresh(true);
                 if (moreCallBack != null)
                     moreCallBack(params);
+
             }
         });
     }
