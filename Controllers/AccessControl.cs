@@ -13,50 +13,63 @@ namespace JsonDemo.Controllers
         {
             protected override bool AuthorizeCore(HttpContextBase httpContext)
             {
-                User connectedUser = (User)HttpContext.Current.Session["ConnectedUser"];
-                if (connectedUser == null)
+                try
                 {
-                    httpContext.Response.Redirect("/Accounts/Login?message=Accès non autorisé!&success=false");
-                    return false;
-                }
-                else
-                {
-                    connectedUser = DB.Users.Get(connectedUser.Id);
-                    if (connectedUser.Blocked)
+                    User connectedUser = (User)HttpContext.Current.Session["ConnectedUser"];
+                    if (connectedUser == null)
                     {
+                        httpContext.Response.Redirect("/Accounts/Login?message=Accès non autorisé!&success=false");
                         return false;
                     }
+                    else
+                    {
+                        connectedUser = DB.Users.Get(connectedUser.Id);
+                        if (connectedUser.Blocked || !connectedUser.IsOnline)
+                        {
+                            return false;
+                        }
+                    }
+                    return true;
                 }
-                return true;
+                catch (Exception ex)
+                {
+                    return false;
+                }
             }
         }
         public class AdminAccess : AuthorizeAttribute
         {
             protected override bool AuthorizeCore(HttpContextBase httpContext)
             {
-                HttpContext.Current.Session["CRUD_Access"] = false;
-                User connectedUser = (User)HttpContext.Current.Session["ConnectedUser"];
-                if (connectedUser == null)
+                try
                 {
-                    httpContext.Response.Redirect("/Accounts/Login?message=Accès non autorisé!&success=false");
-                    return false;
-                }
-                else
-                {
-                    connectedUser = DB.Users.Get(connectedUser.Id);
-                    if (!connectedUser.IsAdmin)
+                    User connectedUser = (User)HttpContext.Current.Session["ConnectedUser"];
+                    if (connectedUser == null)
                     {
-                        if (connectedUser.Blocked)
-                        {
-                            return false;
-                        }
-                        else
-                        {
-                            httpContext.Response.Redirect("/Accounts/Login?message=Accès administrateur non autorisé!&success=false");
-                            return false;
-                        }
+                        httpContext.Response.Redirect("/Accounts/Login?message=Accès non autorisé!&success=false");
+                        return false;
                     }
-                    return true;
+                    else
+                    {
+                        connectedUser = DB.Users.Get(connectedUser.Id);
+                        if (!connectedUser.IsAdmin)
+                        {
+                            if (connectedUser.Blocked || !connectedUser.IsOnline)
+                            {
+                                return false;
+                            }
+                            else
+                            {
+                                httpContext.Response.Redirect("/Accounts/Login?message=Accès administrateur non autorisé!&success=false");
+                                return false;
+                            }
+                        }
+                        return true;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return false;
                 }
             }
         }
