@@ -1,3 +1,4 @@
+using JsonDemo.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,10 +17,11 @@ namespace JsonDemo
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            List<User> users = DB.Users.ToList();
             // Make shure there are no user still online
             for (var i = 0; i < users.Count; i++)
             {
-                 DB.Users.SetOnline(users[i], false);
+                DB.Users.SetOnline(users[i], false);
             }
         }
         protected void Session_Start()
