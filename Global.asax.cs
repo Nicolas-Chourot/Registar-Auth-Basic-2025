@@ -16,7 +16,11 @@ namespace JsonDemo
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            
+            // Make shure there are no user still online
+            for (var i = 0; i < users.Count; i++)
+            {
+                 DB.Users.SetOnline(users[i], false);
+            }
         }
         protected void Session_Start()
         {
