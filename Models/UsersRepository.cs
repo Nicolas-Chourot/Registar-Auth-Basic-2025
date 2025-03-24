@@ -49,7 +49,7 @@ namespace JsonDemo.Models
         }
         public void SetOnline(Object user, bool online)
         {
-            if (user!= null)
+            if (user != null)
             {
                 ((User)user).Online = online;
                 Update((User)user);
