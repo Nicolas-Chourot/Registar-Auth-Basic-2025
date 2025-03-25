@@ -28,6 +28,8 @@ namespace JsonDemo.Controllers
         }
         public ActionResult ExpiredSession()
         {
+            DB.Users.SetOnline(Session["ConnectedUser"], false);
+            Session["ConnectedUser"] = null;
             return Redirect("/Accounts/Login?message=Session expirée, veuillez vous reconnecter.");
         }
         public ActionResult Logout()
