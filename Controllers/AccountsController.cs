@@ -41,7 +41,7 @@ namespace JsonDemo.Controllers
             if (Session["CurrentLoginEmail"] == null) Session["currentLoginEmail"] = "";
             LoginCredential credential = new LoginCredential();
             credential.Email = (string)Session["currentLoginEmail"];
-            DB.Users.SetOnline(Session["ConnectedUser"], false);
+            /* DB.Users.SetOnline(Session["ConnectedUser"], false); */
             Session["ConnectedUser"] = null;
             return View(credential);
         }
