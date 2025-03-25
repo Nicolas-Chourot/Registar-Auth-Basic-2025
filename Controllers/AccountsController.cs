@@ -28,14 +28,10 @@ namespace JsonDemo.Controllers
         }
         public ActionResult ExpiredSession()
         {
-            DB.Users.SetOnline(Session["ConnectedUser"], false);
-            Session["ConnectedUser"] = null;
             return Redirect("/Accounts/Login?message=Session expirée, veuillez vous reconnecter.");
         }
         public ActionResult Logout()
         {
-            DB.Users.SetOnline(Session["ConnectedUser"], false);
-            Session["ConnectedUser"] = null;
             return RedirectToAction("Login", "Accounts");
         }
         public ActionResult Login(string message = "", bool success = false)
@@ -45,7 +41,7 @@ namespace JsonDemo.Controllers
             if (Session["CurrentLoginEmail"] == null) Session["currentLoginEmail"] = "";
             LoginCredential credential = new LoginCredential();
             credential.Email = (string)Session["currentLoginEmail"];
-            /* DB.Users.SetOnline(Session["ConnectedUser"], false); */
+            DB.Users.SetOnline(Session["ConnectedUser"], false);
             Session["ConnectedUser"] = null;
             return View(credential);
         }

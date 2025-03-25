@@ -47,12 +47,14 @@ namespace JsonDemo.Models
                 return user.Copy();
             return null;
         }
-        public void SetOnline(Object user, bool online)
+        public void SetOnline(Object userObj, bool online)
         {
+            var user = (User)userObj;
             if (user != null)
             {
-                ((User)user).Online = online;
-                Update((User)user);
+                user = DB.Users.Get(user.Id);
+                user.Online = online;
+                Update(user);
             }
         }
         public override int Add(User user)
