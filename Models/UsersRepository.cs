@@ -55,6 +55,7 @@ namespace JsonDemo.Models
                 user = DB.Users.Get(user.Id);
                 user.Online = online;
                 Update(user);
+                ((User)userObj).Online = online;
             }
         }
         public override int Add(User user)
